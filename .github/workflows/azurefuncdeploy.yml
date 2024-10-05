@@ -25,7 +25,7 @@ jobs:
 
       - name: Zip the Azure Function Deploy folder
         run: |
-          cd ..
+          cd AzureServerLess
           ls
           zip -r AzureFunctionDeploy.zip AzureFunctionDeploy
 
