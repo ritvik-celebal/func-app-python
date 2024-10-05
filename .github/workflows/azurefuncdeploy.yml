@@ -25,7 +25,8 @@ jobs:
 
       - name: Zip the Azure Function Deploy folder
         run: |
-          cd AzureServerLess
+          cd ./AzureFunctionDeploy
+          ls
           zip -r AzureFunctionDeploy.zip AzureFunctionDeploy
 
       - name: 'Az CLI login'
