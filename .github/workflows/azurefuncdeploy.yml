@@ -21,11 +21,11 @@ jobs:
         run: |
             cd ./AzureFunctionDeploy
             python -m pip install --upgrade pip
-            pip install -r requirements.txt
+             pip install --target=. -r requirements.txt 
 
       - name: Zip the Azure Function Deploy folder
         run: |
-          cd ./AzureFunctionDeploy
+          cd ..
           ls
           zip -r AzureFunctionDeploy.zip AzureFunctionDeploy
 
