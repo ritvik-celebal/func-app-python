@@ -19,8 +19,14 @@ jobs:
 
       - name: Install required python modules
         run: |
+            cd AzureServerLess/AzureFunctionDeploy
             python -m pip install --upgrade pip
             pip install -r requirements.txt
+
+      - name: Zip the Azure Function Deploy folder
+        run: |
+          cd AzureServerLess
+          zip -r AzureFunctionDeploy.zip AzureFunctionDeploy
 
       - name: 'Az CLI login'
         uses: azure/login@v1
@@ -34,8 +40,9 @@ jobs:
           az account show
           az group list
     
-      - name: Run Azure test suite
-        working-directory: ./AzureTestExecutions
+      - name: Build and Deploy to Azure
         run: |
-          pytest  --github-report -v --cov=AzureTestCases --cov-report xml:coverage.xml
-        continue-on-error : true
+          az functionapp deployment source config-zip \
+            --resource-group <YourResourceGroup> \
+            --name <YourFunctionAppName> \
+            --src AzureServerLess/AzureFunctionDeploy.zip

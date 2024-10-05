@@ -5,7 +5,7 @@ from azure.identity import DefaultAzureCredential
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.storage import StorageManagementClient
 credential =  DefaultAzureCredential()
-subscription_id = "285a9b29-43df-4ebf-85b1-61bbf7929871"
+subscription_id = "063965e0-d141-48d4-b8bd-0dfdc0dc00ff"
 resource_client = ResourceManagementClient(credential, subscription_id)
 RESOURCE_GROUP_NAME = "PythonAzureExample-Storage-rg"
 LOCATION = "centralus"
