@@ -1,10 +1,11 @@
 import azure.functions as func
 import logging
 import random
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential , ManagedIdentityCredential
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.storage import StorageManagementClient
-credential =  DefaultAzureCredential()
+#credential =  DefaultAzureCredential()
+credential = ManagedIdentityCredential()
 subscription_id = "063965e0-d141-48d4-b8bd-0dfdc0dc00ff"
 resource_client = ResourceManagementClient(credential, subscription_id)
 RESOURCE_GROUP_NAME = "PythonAzureExample-Storage-rg"
