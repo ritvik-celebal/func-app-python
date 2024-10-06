@@ -14,8 +14,8 @@ LOCATION = "centralus"
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ADMIN)
 
-@app.route(route="GetAllAzureResources")
-def GetAllAzureResources(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="demopythonfunction")
+def demopythonfunction(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     name = req.params.get('name')
@@ -28,8 +28,9 @@ def GetAllAzureResources(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
         DemoAzureResourceCreation()
+        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
+        
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",

@@ -6,7 +6,7 @@ permissions:
       id-token: write
       contents: read
 jobs: 
-  build-and-deploy:
+  deploy-functions:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -21,7 +21,7 @@ jobs:
         run: |
             cd ./AzureFunctionDeploy
             python -m pip install --upgrade pip
-             pip install --target=. -r requirements.txt 
+            pip install --target=. -r requirements.txt 
 
       - name: Zip the Azure Function Deploy folder
         run: |
