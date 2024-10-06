@@ -21,11 +21,12 @@ jobs:
         run: |
             cd ./AzureFunctionDeploy
             python -m pip install --upgrade pip
-            pip install --target=. -r requirements.txt 
+            pip install --target=""./.python_packages/lib/site-packages" -r requirements.txt 
 
       - name: Zip the Azure Function Deploy folder
         run: |
-          zip -r AzureFunctionDeploy.zip AzureFunctionDeploy
+          cd AzureFunctionDeploy
+          zip -r ../AzureFunctionDeploy.zip ./*
 
       - name: 'Az CLI login'
         uses: azure/login@v1
