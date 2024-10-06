@@ -4,8 +4,8 @@ import logging
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ADMIN)
 
-@app.route(route="demopythonfunction")
-def demopythonfunction(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="pythonfunction")
+def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     name = req.params.get('name')
