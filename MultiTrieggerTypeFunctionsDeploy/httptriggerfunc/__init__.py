@@ -17,7 +17,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(json.dumps({"message": f"Hello, {name}!"}), mimetype="application/json")
     else:
         return func.HttpResponse(
-            json.dumps({"error": "Please pass a name in the query string or in the request body"}),
+            json.dumps({"error": "Please pass a name in the query string or in the request body 000000000"}),
             status_code=400,
             mimetype="application/json"
         )
