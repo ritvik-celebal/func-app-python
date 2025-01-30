@@ -1,9 +1,10 @@
 import azure.functions as func
 import logging
-from azure.data.tables import TableServiceClient
+from azure.data.tables import TableServiceClient, TableEntity
 from azure.identity import DefaultAzureCredential
 import datetime
 import json
+import os
 
 def main(msg: func.QueueMessage) -> None:
     logging.info("Queue trigger function started.")
@@ -16,24 +17,28 @@ def main(msg: func.QueueMessage) -> None:
         row_key = data.get("row_key", str(datetime.datetime.utcnow().timestamp()))
         partition_key = data.get("partition_key", "default_partition")
         additional_data = data.get("data", {})
-        
-        # Use Managed Identity to authenticate
-        credential = DefaultAzureCredential()
+
+        # Create TableServiceClient
         table_service_client = TableServiceClient(
-            endpoint="https://costoptimizationsas.table.core.windows.net",
-            credential=credential
+            endpoint=os.getenv("TABLE_STORAGE_ENDPOINT"),
+            credential=DefaultAzureCredential()
         )
-        
-        # Access the table
-        table_client = table_service_client.get_table_client("testtabledemo")
-        
-        # Insert data into the table
-        entity = {
-            "PartitionKey": partition_key,
-            "RowKey": row_key,
-            **additional_data
-        }
-        table_client.create_entity(entity)
-        logging.info(f"Entity inserted: {entity}")
+
+        # Get table client
+        table_name = os.getenv("TABLE_NAME", "defaultTable")
+        table_client = table_service_client.get_table_client(table_name)
+
+        # Create entity
+        entity = TableEntity()
+        entity["PartitionKey"] = partition_key
+        entity["RowKey"] = row_key
+        entity.update(additional_data)
+
+        # Insert or update entity in table storage
+        table_client.upsert_entity(entity)
+        logging.info(f"Entity with PartitionKey: {partition_key} and RowKey: {row_key} upserted successfully.")
+
+    except json.JSONDecodeError as e:
+        logging.error(f"JSON decode error: {e}")
     except Exception as e:
-        logging.error(f"Error processing queue message: {e}")
+        logging.error(f"An error occurred: {e}")
