@@ -2,7 +2,7 @@
 
 This repository contains an Azure Function that is triggered by messages in an Azure Storage Queue. The function processes the messages and stores the data in Azure Table Storage.
 
-## Prerequisites
+##### Prerequisites
 
 - Python 3.8 or later
 - Azure Functions Core Tools

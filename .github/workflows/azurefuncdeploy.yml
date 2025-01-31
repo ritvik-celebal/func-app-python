@@ -40,10 +40,3 @@ jobs:
         run: |
           az account show
           az group list
-    
-      - name: Build and Deploy to Azure
-        run: |
-          az functionapp deployment source config-zip \
-            --resource-group "costoptimizationsas" \
-            --name "queuetriggereddemo" \
-            --src "./AzureStorageQueueTriggerFunction.zip"
