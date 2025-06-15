@@ -8,9 +8,8 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ADMIN)
 
 @app.route(route="pythonfunction")
 def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function started.')
+    logging.info('Function triggered.')
 
-    # Read "name" from query or body
     name = req.params.get('name')
     if not name:
         try:
@@ -26,21 +25,25 @@ def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     try:
-        # Get queue URL from environment
-        queue_url = os.getenv("QUEUE_URL")
-        if not queue_url:
-            raise ValueError("QUEUE_URL not set in environment variables.")
+        # Get queue name and storage account in env
+        storage_account_name = os.getenv("STORAGE_ACCOUNT_NAME")  # e.g., mystorageaccount
+        queue_name = os.getenv("QUEUE_NAME")                      # e.g., myqueue
 
-        # Authenticate with Managed Identity
+        if not storage_account_name or not queue_name:
+            raise ValueError("STORAGE_ACCOUNT_NAME or QUEUE_NAME is not set.")
+
+        account_url = f"https://{storage_account_name}.queue.core.windows.net"
+
+        # Authenticate using Managed Identity
         credential = ManagedIdentityCredential()
-        queue_client = QueueClient(queue_url=queue_url, credential=credential)
+        queue_client = QueueClient(account_url=account_url, queue_name=queue_name, credential=credential)
 
-        # Send message to queue
+        # Send the message
         queue_client.send_message(name)
-        logging.info(f"Message '{name}' enqueued successfully.")
+        logging.info(f"Message '{name}' sent to queue '{queue_name}'.")
 
-        return func.HttpResponse(f"Message '{name}' enqueued successfully.", status_code=200)
+        return func.HttpResponse(f"Message '{name}' sent successfully.", status_code=200)
 
     except Exception as e:
-        logging.error(f"Failed to enqueue message: {str(e)}")
-        return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+        logging.error(f"Error sending message: {str(e)}")
+        return func.HttpResponse(f"Internal server error: {str(e)}", status_code=500)
