@@ -2,7 +2,7 @@ import requests
 import json
 
 # Azure Function URL (adjust the function name and app name as needed)
-function_url = "https://testami.azure-api.net/python/pythonfunction"
+function_url = "https://testfunccloud.azurewebsites.net/api/pythonfunction"
 
 # Function key for authorization (if required)
 function_key = "<>"  # Omit if Function access level is "Anonymous"
