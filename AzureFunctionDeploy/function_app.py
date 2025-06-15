@@ -25,7 +25,7 @@ def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     try:
-        # Get queue name and storage account from environment
+        # Get queue name and storage account in env
         storage_account_name = os.getenv("STORAGE_ACCOUNT_NAME")  # e.g., mystorageaccount
         queue_name = os.getenv("QUEUE_NAME")                      # e.g., myqueue
 
