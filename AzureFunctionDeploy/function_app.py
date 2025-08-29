@@ -4,8 +4,9 @@ import os
 from azure.identity import ManagedIdentityCredential
 from azure.storage.queue import QueueClient
 
-app = func.FunctionApp(http_auth_level=func.AuthLevel.ADMIN)
+app = func.FunctionApp()
 
+@app.function_name(name="actions-py")
 @app.route(route="pythonfunction")
 def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Function triggered.')
@@ -26,8 +27,8 @@ def pythonfunction(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         # Get queue name and storage account in env
-        storage_account_name = os.getenv("STORAGE_ACCOUNT_NAME")  # e.g., mystorageaccount
-        queue_name = os.getenv("QUEUE_NAME")                      # e.g., myqueue
+        storage_account_name = os.getenv("cicdpocae24")  # e.g., mystorageaccount
+        queue_name = os.getenv("queue")                      # e.g., myqueue
 
         if not storage_account_name or not queue_name:
             raise ValueError("STORAGE_ACCOUNT_NAME or QUEUE_NAME is not set.")
