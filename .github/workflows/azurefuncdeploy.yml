@@ -45,9 +45,10 @@ jobs:
 
       - name: Deploy using az webapp deploy
         run: |
-         az webapp deploy \
-           --resource-group "cicd-poc" \
-           --name "actions-py" \
-           --src-path "./AzureFunctionDeploy.zip" \
-           --type zip
+          az functionapp deployment source config-zip \
+            --resource-group "cicd-poc" \
+            --name "actions-py" \
+            --src "./AzureFunctionDeploy.zip" \
+            --build-remote true
+
 
