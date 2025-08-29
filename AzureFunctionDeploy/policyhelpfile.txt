@@ -1,6 +1,0 @@
-<check-header name="Ocp-Apim-Subscription-Key" failed-check-httpcode="401" failed-check-error-message="Missing or invalid subscription key">
-    <value>{{subscription-key}}</value>
-</check-header>
-<set-query-parameter name="code" exists-action="override">
-    <value>{{function-key}}</value>
-</set-query-parameter>
