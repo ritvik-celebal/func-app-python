@@ -50,7 +50,7 @@ jobs:
             --resource-group cicd-poc \
             --branch main \
             --manual-integration \
-            --repo-url https://github.com/your/repo.git
+            --repo-url https://github.com/ritvik-celebal/func-app-python
 
 
 
