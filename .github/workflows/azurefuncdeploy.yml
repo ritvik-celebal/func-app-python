@@ -1,15 +1,17 @@
-name: Azure Function Deploy With CICD.
+name: Azure Function Deploy With CICD
+
 on:
   push:
-    branches:
-      - main
+    branches: main 
 
 permissions:
-      id-token: write
-      contents: read
-jobs: 
+  id-token: write
+  contents: read
+
+jobs:
   deploy-functions:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -22,35 +24,18 @@ jobs:
 
       - name: Install required python modules
         run: |
-            cd ./AzureFunctionDeploy
-            python -m pip install --upgrade pip
-            pip install --target="./.python_packages/lib/site-packages" -r requirements.txt 
+          cd ./AzureFunctionDeploy
+          python -m pip install --upgrade pip
+          pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
 
       - name: Zip the Azure Function Deploy folder
         run: |
           cd AzureFunctionDeploy
-          zip -r ../AzureFunctionDeploy.zip ./*
+          zip -r ../AzureFunctionDeploy.zip .*
 
-      - name: 'Az CLI login'
-        uses: azure/login@v1
+      - name: Deploy using Azure Functions Action
+        uses: Azure/functions-action@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-
-  
-      - name: 'Run az commands'
-        run: |
-          az account show
-          az group list
-
-      - name: Deploy using az webapp deploy
-        run: |
-          az functionapp deployment source config \
-            --name actions-py \
-            --resource-group cicd-poc \
-            --branch main \
-            --manual-integration \
-            --repo-url https://github.com/ritvik-celebal/func-app-python
-
-
-
+          app-name: "actions-py"
+          package: "./AzureFunctionDeploy.zip"
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
